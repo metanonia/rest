@@ -1,0 +1,6 @@
+unKnown:
+  code: "-999"
+  msg: "알수없는 에러가 발생했습니다."
+userNotFound:
+  code: "-1000"
+  msg: "존재하지 않는 사용자입니다."
