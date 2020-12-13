@@ -11,6 +11,7 @@ import java.util.List;
 
 @Service
 public class ResponseService {
+
     @Getter
     public enum CommonResponse {
         SUCCESS(0, "success"),
@@ -45,11 +46,29 @@ public class ResponseService {
         return result;
     }
 
-    public CommonResult getSuccessResult(CommonResponse response) {
+    public CommonResult getSuccessResult() {
         CommonResult result = new CommonResult();
         result.setSuccess(true);
-        result.setCode(response.getCode());
-        result.setMsg(response.getMsg());
+        result.setCode(CommonResponse.SUCCESS.getCode());
+        result.setMsg(CommonResponse.SUCCESS.getMsg());
+
+        return result;
+    }
+
+    public <T>SingleResult<T> getSinglFailResult(String msg) {
+        SingleResult<T> result = new SingleResult<>();
+        result.setSuccess(false);
+        result.setCode(CommonResponse.Fail.getCode());
+        result.setMsg(msg);
+
+        return result;
+    }
+
+    public CommonResult getCommonFailResult(String msg) {
+        CommonResult result = new CommonResult();
+        result.setSuccess(false);
+        result.setCode(CommonResponse.Fail.getCode());
+        result.setMsg(msg);
 
         return result;
     }

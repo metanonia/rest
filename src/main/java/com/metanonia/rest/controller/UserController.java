@@ -96,6 +96,6 @@ public class UserController {
         ) {
         userRepository.delete(userRepository.findByUid(uid));
 
-        return responseService.getSuccessResult(ResponseService.CommonResponse.SUCCESS);
+        return responseService.getSuccessResult();
     }
 }

@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,6 +20,7 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class JwtTokenProvider {
@@ -66,6 +68,7 @@ public class JwtTokenProvider {
             return !claimsJws.getBody().getExpiration().before(new Date());
         }
         catch (Exception e) {
+            log.info(e.toString());
             return false;
         }
     }
