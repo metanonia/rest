@@ -2,6 +2,7 @@ package com.metanonia.rest.controller;
 
 import com.metanonia.rest.advice.exception.UserNotFoundException;
 import com.metanonia.rest.model.User;
+import com.metanonia.rest.parameter.SignUp;
 import com.metanonia.rest.repository.UserRepository;
 import com.metanonia.rest.response.CommonResult;
 import com.metanonia.rest.response.SingleResult;
@@ -44,15 +45,11 @@ public class UserController {
     })
     @ApiOperation(value = "save user", notes = "Save User")
     @PostMapping("/user")
-    public SingleResult<User> saveUser(
-           @ApiParam(value = "Uid", required = true) @RequestParam String uid
-         , @ApiParam(value = "Name", required = true) @RequestParam String name
-         , @ApiParam(value = "Password", required = true) @RequestParam String password
-        ) {
+    public SingleResult<User> saveUser(@RequestBody SignUp signUp) {
         User user = User.builder()
-                .uid(uid)
-                .name(name)
-                .password(password)
+                .uid(signUp.getUid())
+                .name(signUp.getName())
+                .password(signUp.getPassword())
                 .build();
         return responseService.getSingleResult(userRepository.save(user));
     }
@@ -63,14 +60,10 @@ public class UserController {
     })
     @ApiOperation(value = "modify user", notes = "Modify user")
     @PutMapping("/user")
-    public SingleResult<User> modifyUser(
-            @ApiParam(value = "Uid", required = true) @RequestParam String uid
-          , @ApiParam(value = "Name", required = false) @RequestParam(required = false) String name
-          , @ApiParam(value = "Password", required = false) @RequestParam(required = false) String password
-        ) {
+    public SingleResult<User> modifyUser(@RequestBody SignUp signUp) {
         SingleResult<User> result = new SingleResult<>();
 
-        User user = userRepository.findByUid(uid);
+        User user = userRepository.findByUid(signUp.getUid());
         if(user == null) {
             result.setSuccess(false);
             result.setCode(ResponseService.CommonResponse.Fail.getCode());
@@ -78,8 +71,8 @@ public class UserController {
             return result;
         }
         else {
-            if (name != null) user.setName(name);
-            if (password != null) user.setPassword(password);
+            if (signUp.getName() != null) user.setName(signUp.getName());
+            if (signUp.getPassword() != null) user.setPassword(signUp.getPassword());
 
             return responseService.getSingleResult(userRepository.save(user));
         }
