@@ -2,6 +2,7 @@ package com.metanonia.rest.controller;
 
 import com.metanonia.rest.advice.exception.UserNotFoundException;
 import com.metanonia.rest.model.User;
+import com.metanonia.rest.parameter.SigIn;
 import com.metanonia.rest.parameter.SignUp;
 import com.metanonia.rest.repository.UserRepository;
 import com.metanonia.rest.response.CommonResult;
@@ -31,15 +32,14 @@ public class SignController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @ApiOperation(value="login", notes = "email id")
+    @ApiOperation(value="login", notes = "id(email)")
     @PostMapping("/signin")
-    public SingleResult<String> signin(@ApiParam(value = "email", required = true) @RequestParam String uid
-                                     , @ApiParam(value = "password", required = true) @RequestParam String passowrd
+    public SingleResult<String> signin(@RequestBody SigIn sigIn
                                    ) {
 
-        User user = Optional.ofNullable(userRepository.findByUid(uid)).orElseThrow(UserNotFoundException::new);
+        User user = Optional.ofNullable(userRepository.findByUid(sigIn.getUid())).orElseThrow(UserNotFoundException::new);
 
-        if(passowrd.matches(user.getPassword()) == false) {
+        if(sigIn.getPassword().matches(user.getPassword()) == false) {
             return responseService.getSinglFailResult("UserId/Password not found");
         }
 
