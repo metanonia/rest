@@ -33,8 +33,8 @@ public class SwaggerConfiguration {
     }
 
     private ApiInfo swaggerInfo() {
-        return new ApiInfoBuilder().title("Metanonia API Documentation")
-                .description("Server Api Documentation")
+        return new ApiInfoBuilder().title("Metanonia API Sample Documentation")
+                .description("Restful Jwt Api Documentation")
                 .license("metanonia").licenseUrl("http://metanonia.com")
                 .version("1")
                 .build();
