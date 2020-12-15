@@ -1,6 +1,7 @@
 package com.metanonia.rest.controller;
 
 import com.metanonia.rest.advice.exception.UserNotFoundException;
+import com.metanonia.rest.crypto.CryptoUtils;
 import com.metanonia.rest.model.User;
 import com.metanonia.rest.parameter.SigIn;
 import com.metanonia.rest.parameter.SignUp;
@@ -39,7 +40,7 @@ public class SignController {
 
         User user = Optional.ofNullable(userRepository.findByUid(sigIn.getUid())).orElseThrow(UserNotFoundException::new);
 
-        if(sigIn.getPassword().matches(user.getPassword()) == false) {
+        if(CryptoUtils.Sha256(sigIn.getPassword()).matches(user.getPassword()) == false) {
             return responseService.getSinglFailResult("UserId/Password not found");
         }
 
@@ -54,7 +55,7 @@ public class SignController {
         try {
             userRepository.save(User.builder()
                     .uid(signUp.getUid())
-                    .password(signUp.getPassword())
+                    .password(CryptoUtils.Sha256(signUp.getPassword()))
                     .name(signUp.getName())
                     .roles(roles)
                     .build()

@@ -1,6 +1,7 @@
 package com.metanonia.rest.controller;
 
 import com.metanonia.rest.advice.exception.UserNotFoundException;
+import com.metanonia.rest.crypto.CryptoUtils;
 import com.metanonia.rest.model.User;
 import com.metanonia.rest.parameter.SignUp;
 import com.metanonia.rest.repository.UserRepository;
@@ -49,7 +50,7 @@ public class UserController {
         User user = User.builder()
                 .uid(signUp.getUid())
                 .name(signUp.getName())
-                .password(signUp.getPassword())
+                .password(CryptoUtils.Sha256(signUp.getPassword()))
                 .build();
         return responseService.getSingleResult(userRepository.save(user));
     }
